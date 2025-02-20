@@ -5,18 +5,20 @@ import {
   signInWithRedirect,
   signInWithPopup,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
-// TODO: Add SDKs for Firebase products that you want to use
+// SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCMRwECwzw7-aykJfLKRwlJ7XuY7zdhN2o",
-  authDomain: "crwn-db-29665.firebaseapp.com",
-  projectId: "crwn-db-29665",
-  storageBucket: "crwn-db-29665.firebasestorage.app",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  authDomain: process.env.REACT_APP_FIREBASE_PROJECT_ID + ".firebaseapp.com",
+  storageBucket:
+    process.env.REACT_APP_FIREBASE_PROJECT_ID + ".firebasestorage.app",
   messagingSenderId: "580145608190",
   appId: "1:580145608190:web:8f1239e5a0614a19f57caf",
 };
@@ -53,7 +55,7 @@ export const createUserDocFromAuth = async (authUser, additional) => {
         displayName,
         email,
         createdAt,
-        ...additional
+        ...additional,
       });
     } catch (error) {
       console.error("Error creating user:", error);
@@ -65,7 +67,14 @@ export const createUserDocFromAuth = async (authUser, additional) => {
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) {
-    return null;
+    return;
   }
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) {
+    return;
+  }
+  return await signInWithEmailAndPassword(auth, email, password);
 };
