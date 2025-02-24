@@ -6,7 +6,8 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
+  onAuthStateChanged
 } from "firebase/auth";
 
 // SDKs for Firebase products that you want to use
@@ -43,10 +44,10 @@ export const createUserDocFromAuth = async (authUser, additional) => {
     return null;
   }
   const userDocRef = doc(firestoreDb, "users", authUser.uid);
-  console.log("userDocRef:", userDocRef);
+  //console.log("userDocRef:", userDocRef);
   const userSnapshot = await getDoc(userDocRef);
-  console.log("userSnapshot:", userSnapshot);
-  console.log("userSnapshot.exists():", userSnapshot.exists());
+  //console.log("userSnapshot:", userSnapshot);
+  //console.log("userSnapshot.exists():", userSnapshot.exists());
 
   if (!userSnapshot.exists()) {
     const { displayName, email } = authUser;
@@ -81,3 +82,5 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 };
 
 export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
