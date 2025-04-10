@@ -1,4 +1,5 @@
-import { initializeApp } from 'firebase/app';
+import config from "../../config/fbase.config.json";
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -7,12 +8,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "firebase/auth";
 
 // SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { 
+import {
   getFirestore,
   doc,
   getDoc,
@@ -20,16 +21,15 @@ import {
   collection,
   writeBatch,
   query,
-  getDocs
+  getDocs,
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  authDomain: process.env.REACT_APP_FIREBASE_PROJECT_ID + ".firebaseapp.com",
-  storageBucket:
-    process.env.REACT_APP_FIREBASE_PROJECT_ID + ".firebasestorage.app",
+  apiKey: config.FBASE_API_KEY,
+  projectId: config.FBASE_PROJECT_ID,
+  authDomain: config.FBASE_PROJECT_ID + ".firebaseapp.com",
+  storageBucket: config.FBASE_PROJECT_ID + ".firebasestorage.app",
   messagingSenderId: "580145608190",
   appId: "1:580145608190:web:8f1239e5a0614a19f57caf",
 };
@@ -50,18 +50,27 @@ export const signInWithGoogleRedirect = () =>
 
 export const db = getFirestore();
 
-export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
   if (!collectionKey) {
     console.warn("No collection key provided.");
     return;
   }
 
-  if (!objectsToAdd || !Array.isArray(objectsToAdd) || objectsToAdd.length === 0) {
+  if (
+    !objectsToAdd ||
+    !Array.isArray(objectsToAdd) ||
+    objectsToAdd.length === 0
+  ) {
     console.warn("No objects collection to add.");
     return;
   }
 
-  const objectsArray = Array.isArray(objectsToAdd) ? objectsToAdd : Object.values(objectsToAdd);
+  const objectsArray = Array.isArray(objectsToAdd)
+    ? objectsToAdd
+    : Object.values(objectsToAdd);
   console.log(objectsArray);
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -72,11 +81,11 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
   });
 
   await batch.commit();
-  console.log('done');
-}
+  console.log("done");
+};
 
 export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, 'categories');
+  const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
   const querySnapshot = await getDocs(q);
   const categoryMap = querySnapshot.docs.reduce((acc, doc) => {
@@ -86,7 +95,7 @@ export const getCategoriesAndDocuments = async () => {
   }, {});
 
   return categoryMap;
-}
+};
 
 export const createUserDocFromAuth = async (authUser, additional) => {
   if (!authUser) {
@@ -132,4 +141,5 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 
 export const signOutUser = async () => await signOut(auth);
 
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);
