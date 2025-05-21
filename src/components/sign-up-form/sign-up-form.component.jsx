@@ -9,7 +9,6 @@ import FormInput from "../form-input/form-input.component";
 import { SignUpContainer } from "./sign-up-form.styles";
 
 import Button from "../button/button.component";
-//import { UserContext } from "../../contexts/user.context";
 
 const defaultFields = {
   displayName: "",
@@ -21,8 +20,6 @@ const defaultFields = {
 const SignUpForm = () => {
   const [fields, setFields] = useState(defaultFields);
   const { displayName, email, password, confirmPassword } = fields;
-
-  //const { setCurrentUser } = useContext(UserContext);
 
   const resetFormFields = () => {
     setFields(defaultFields);

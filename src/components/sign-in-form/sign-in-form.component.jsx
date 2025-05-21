@@ -7,8 +7,7 @@ import {
 } from "../../utils/firebase/firebase.utils";
 
 import FormInput from '../form-input/form-input.component';
-import { SignInContainer, ButtonsContainer } from './sign-in-form.styles';
-//import { UserContext } from '../../contexts/user.context';
+import { SignInContainer, ButtonsContainer } from "./sign-in-form.styles";
 
 import Button, { BUTTON_TYPE_CLASS } from '../button/button.component';
 
